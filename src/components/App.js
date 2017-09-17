@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Form from './Form';
-// import Filters from './Filters';
+import Filters from './Filters';
 import List from './List';
 
 class App extends Component {
@@ -11,13 +11,15 @@ class App extends Component {
     this.state = {
       inputVal: '',
       todos: [],
-      nextToDoId: 0
+      nextToDoId: 0,
+      currentFilter: 'ALL'
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleTodoClick = this.handleTodoClick.bind(this);
     this.handleRemoveTodo = this.handleRemoveTodo.bind(this);
+    this.handleFilterClick = this.handleFilterClick.bind(this);
   };
 
   handleInputChange(e) {
@@ -62,9 +64,6 @@ class App extends Component {
   }
 
   handleRemoveTodo(todoId) {
-    console.log('in removeTdo');
-    console.log('todoId:', todoId);
-    console.log('this:', this);
 
     this.setState((prevState) => {
       const updatedTodos = prevState.todos.filter((todo) => {
@@ -77,13 +76,35 @@ class App extends Component {
     });
   }
 
+  handleFilterClick(filter) {
+    this.setState({currentFilter: filter});
+  }
+
+  getTodos(filter) {
+    switch(filter) {
+      case 'ALL':
+        return this.state.todos;
+      case 'COMPLETE':
+        return this.state.todos.filter((todo) => {
+          return todo.completed === true
+        });
+      case 'INCOMPLETE':
+        return this.state.todos.filter((todo) => {
+          return todo.completed === false
+        });
+      default:
+        return this.state.todos;
+    }
+  }
+
   render() {
     return (
       <div className="App">
         <Form handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit}
           inputVal={this.state.inputVal} />
-        <List todos={this.state.todos}
+        <Filters handleFilterClick={this.handleFilterClick} />
+        <List todos={this.getTodos(this.state.currentFilter)}
           handleTodoClick={this.handleTodoClick}
           handleRemoveTodo={this.handleRemoveTodo} />
       </div>

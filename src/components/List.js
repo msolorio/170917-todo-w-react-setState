@@ -13,9 +13,5 @@ export default function List(props) {
     );
   });
 
-  return (
-    <div>
-      {list}
-    </div>
-  )
+  return <ul>{list}</ul>;
 }
