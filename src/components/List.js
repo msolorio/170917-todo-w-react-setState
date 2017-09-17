@@ -8,7 +8,8 @@ export default function List(props) {
       <ListItem todoText={todo.todoText}
         completed={todo.completed}
         key={index}
-        handleTodoClick={() => props.handleTodoClick(todo.todoId)} />
+        handleTodoClick={() => props.handleTodoClick(todo.todoId)}
+        handleRemoveTodo={() => props.handleRemoveTodo(todo.todoId)} />
     );
   });
 

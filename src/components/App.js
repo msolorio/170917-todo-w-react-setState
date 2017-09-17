@@ -17,11 +17,12 @@ class App extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleTodoClick = this.handleTodoClick.bind(this);
-  }
+    this.handleRemoveTodo = this.handleRemoveTodo.bind(this);
+  };
 
   handleInputChange(e) {
     this.setState({inputVal: e.target.value});
-  }
+  };
 
   handleFormSubmit(e) {
     e.preventDefault();
@@ -42,8 +43,6 @@ class App extends Component {
   }
 
   handleTodoClick(todoId) {
-    console.log('in handleTodoClick');
-    console.log('todoId:', todoId);
 
     this.setState((prevState) => {
       const updatedTodos = prevState.todos.map((todo) => {
@@ -62,6 +61,22 @@ class App extends Component {
     });
   }
 
+  handleRemoveTodo(todoId) {
+    console.log('in removeTdo');
+    console.log('todoId:', todoId);
+    console.log('this:', this);
+
+    this.setState((prevState) => {
+      const updatedTodos = prevState.todos.filter((todo) => {
+        return todo.todoId !== todoId
+      });
+
+      return {
+        todos: updatedTodos
+      };
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -69,7 +84,8 @@ class App extends Component {
           handleFormSubmit={this.handleFormSubmit}
           inputVal={this.state.inputVal} />
         <List todos={this.state.todos}
-          handleTodoClick={this.handleTodoClick} />
+          handleTodoClick={this.handleTodoClick}
+          handleRemoveTodo={this.handleRemoveTodo} />
       </div>
     );
   }
